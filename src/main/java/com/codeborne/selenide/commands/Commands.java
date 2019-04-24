@@ -42,12 +42,14 @@ public class Commands {
     add("getWrappedElement", new GetWrappedElement());
     add("screenshot", new TakeScreenshot());
     add("screenshotAsImage", new TakeScreenshotAsImage());
+    add("getSearchCriteria", new GetSearchCriteria());
   }
 
   private void addActionsCommands() {
     add("dragAndDropTo", new DragAndDropTo());
     add("hover", new Hover());
     add("scrollTo", new ScrollTo());
+    add("scrollIntoView", new ScrollIntoView());
   }
 
   private void addInfoCommands() {
@@ -70,7 +72,6 @@ public class Commands {
     add("click", new Click());
     add("contextClick", new ContextClick());
     add("doubleClick", new DoubleClick());
-    add("followLink", new FollowLink());
   }
 
   private void addModifyCommands() {
@@ -84,10 +85,13 @@ public class Commands {
   private void addFindCommands() {
     add("find", new Find());
     add("$", new Find());
+    add("$x", new FindByXpath());
     add("findAll", new FindAll());
     add("$$", new FindAll());
+    add("$$x", new FindAllByXpath());
     add("closest", new GetClosest());
     add("parent", new GetParent());
+    add("lastChild", new GetLastChild());
   }
 
   private void addKeyboardCommands() {
@@ -126,12 +130,12 @@ public class Commands {
     add("waitUntil", new ShouldBe());
   }
 
-  public synchronized void add(String method, Command command) {
+  public void add(String method, Command command) {
     commands.put(method, command);
   }
 
   @SuppressWarnings("unchecked")
-  public synchronized <T> T execute(Object proxy, WebElementSource webElementSource, String methodName, Object[] args) 
+  public <T> T execute(Object proxy, WebElementSource webElementSource, String methodName, Object[] args)
       throws IOException {
     Command command = commands.get(methodName);
     if (command == null) {
